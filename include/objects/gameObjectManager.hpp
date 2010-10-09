@@ -6,6 +6,7 @@
 #include <map>
 #include <objects/spacialObject.hpp>
 #include <objects/visualAppearance.hpp>
+#include <objects/material.hpp>
 
 namespace objects
 {
@@ -16,15 +17,18 @@ namespace objects
     {
     	public:
 
-            void createSpacialObject( std::string spacialObjectId, std::string visualAppearanceId );
+
             VisualAppearance* provideVisualAppearance( std::string visualAppearanceId );
-//            AudioAppearance* provideAudioAppearance( std::string* audioAppearanceId );
+            Material* provideMaterial( std::string materialId );
+
             SpacialObject* nextSpacialObject( int current );
+
             VisualAppearance* nextVisualAppearance( int current );
 
             void loadObjects( std::string spacialObjectsFile );
             void loadVisualAppearances( std::string visualAppearanceFile );
-//            void loadAudioAppearances( std::string* audioAppearanceFile );
+            void loadMaterials( std::string materialFile );
+
 
             FileData* fetchFileData( std::string* fileName, int fields );
 
@@ -36,8 +40,7 @@ namespace objects
     	SpacialObject*                      player_;
     	std::vector< SpacialObject* >       spacialObjects_;
     	std::vector< VisualAppearance* >    visualAppearancesLibrary_;
-//    	std::vector< AudioAppearance* >     audioAppearancesLibrary_;
-//      std::vector< Script* >              scriptLibrary_;
+    	std::vector< Material* >            materialLibrary_;
     };
 
 }

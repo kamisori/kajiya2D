@@ -25,6 +25,7 @@ struct flags{
     bool displaySpritesLibrary;
 
     bool Running;
+
 /*bool createObject = false;
 bool createAlignedBox = false;
 bool createOrientedBox = false;
@@ -32,6 +33,7 @@ bool createCircle = false;
 bool createPolygon = false;
 bool createEdge = false;
 bool created = false;*/
+
 }globalflags;
 
 sf::Mutex GlobalMutex;
@@ -70,8 +72,6 @@ void inputThread(void* UserData)
 
         GlobalMutex.Unlock();
     }
-
-    //Don't forget to clean up before leaving this thread!
 }
 
 int main()
@@ -86,6 +86,7 @@ int main()
 
     resolution.x = 800;
     resolution.y = 600;
+
     //load settings and stuff
     sf::Font dejaVuSans;
     if(!dejaVuSans.LoadFromFile("data/DejaVuSans.ttf"))
@@ -105,6 +106,7 @@ int main()
     /* Creating a fullscreen window with the best video mode supported
     App.Create(sf::VideoMode::GetMode(0), "SFML Window", sf::Style::Fullscreen);
     sf::VideoMode DesktopMode = sf::VideoMode::GetDesktopMode(); */
+
     sf::Thread inputHandler(&inputThread, &App);
     inputHandler.Launch();
 
@@ -219,7 +221,7 @@ int main()
                 spriteDesc.SetPosition(tmpSpritePosition);
                 App.Draw(spriteDesc);
                 tmpSpritePosition.x += 150;
-                sf::Sprite* tmpSprite = tmpAnim->nextFrame();
+                sf::Sprite* tmpSprite = tmpAnim->getNextFrame();
                 tmpSprite->SetPosition( tmpSpritePosition );
                 tmpSprite->SetRotation( 0 );
                 sf::Vector2f tmp = tmpSprite->GetCenter();
@@ -245,17 +247,17 @@ int main()
 
             App.SetView(tmpView);
         }else{
+
     ////////////////////            drawing/evaluating data from the calculations
             int i = 0;
             objects::SpacialObject* tmpObject = b2WorldAndVisualWorld.globalGameObjectManager_->nextSpacialObject( i );
             while( tmpObject != NULL )
             {
-                //tmpObject->bodyDefinition_.position_
                 objects::Animation* tmpAnim = tmpObject->getVisualAppearance()->getCurrentAnimation();
 
                 std::string object = tmpObject->getSpacialObjectId();
                 if(globalflags.showSprites){
-                    sf::Sprite* tmpSprite = tmpAnim->nextFrame();
+                    sf::Sprite* tmpSprite = tmpAnim->getNextFrame();
                     if( tmpObject->shape_ == objects::ALIGNED_BOX
                        || tmpObject->shape_ == objects::ORIENTED_BOX )
                        {
@@ -304,8 +306,6 @@ int main()
                            App.Draw( physicsSprite );
                         }
                 }
-                //std::cout << tmpObject->getSpacialObjectId() << " " << position.x << " " << position.y << " " << angle << std::endl;
-
                 i++;
                 tmpObject = b2WorldAndVisualWorld.globalGameObjectManager_->nextSpacialObject( i );
             }

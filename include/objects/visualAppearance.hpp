@@ -19,7 +19,7 @@ namespace objects
         protected:
 
         private:
-            std::string          visualAppearanceId_; //something like player, zombie1, zombie2, ..etc
+            std::string          visualAppearanceId_;
             std::vector< Animation* >   possibleAnimations_;
             Animation*                  currentAnimation_;
     };

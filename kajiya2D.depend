@@ -1798,7 +1798,7 @@
 	<Box2D/Dynamics/b2WorldCallbacks.h>
 	<Box2D/Dynamics/b2Fixture.h>
 
-1279692824 source:/media/Baeumchen/work/kajiya2D/src/gameWorld.cpp
+1286621174 source:/media/Baeumchen/work/kajiya2D/src/gameWorld.cpp
 	<string>
 	<vector>
 	<map>
@@ -1806,25 +1806,27 @@
 	<gameWorld.hpp>
 	<Box2D/Box2D.h>
 
-1286474374 /media/Baeumchen/work/kajiya2D/include/objects/gameObjectManager.hpp
+1286619346 /media/Baeumchen/work/kajiya2D/include/objects/gameObjectManager.hpp
 	<string>
 	<vector>
 	<map>
 	<objects/spacialObject.hpp>
 	<objects/visualAppearance.hpp>
+	<objects/material.hpp>
 
-1280064662 /media/Baeumchen/work/kajiya2D/include/objects/spacialObject.hpp
+1286627199 /media/Baeumchen/work/kajiya2D/include/objects/spacialObject.hpp
 	<string>
 	<SFML/System.hpp>
 	<objects/visualAppearance.hpp>
 	<Box2D/Box2D.h>
+	<objects/material.hpp>
 
-1278790628 /media/Baeumchen/work/kajiya2D/include/objects/visualAppearance.hpp
+1286628118 /media/Baeumchen/work/kajiya2D/include/objects/visualAppearance.hpp
 	<string>
 	<vector>
 	<objects/animation.hpp>
 
-1286474320 /media/Baeumchen/work/kajiya2D/include/objects/animation.hpp
+1286619025 /media/Baeumchen/work/kajiya2D/include/objects/animation.hpp
 	<string>
 	<vector>
 	<SFML/System.hpp>
@@ -1861,7 +1863,7 @@
 	<objects/gameObjectManager.hpp>
 	<Box2D/Box2D.h>
 
-1286389268 source:/media/Baeumchen/work/kajiya2D/src/main.cpp
+1286627007 source:/media/Baeumchen/work/kajiya2D/src/main.cpp
 	<iostream>
 	<SFML/System.hpp>
 	<objects/gameObjectManager.hpp>
@@ -1874,12 +1876,12 @@
 1279699630 /media/Baeumchen/work/kajiya2D/include/main.hpp
 	<gameWorld.hpp>
 
-1286388566 source:/media/Baeumchen/work/kajiya2D/src/objects/animation.cpp
+1286619833 source:/media/Baeumchen/work/kajiya2D/src/objects/animation.cpp
 	<string>
 	<vector>
 	<objects/animation.hpp>
 
-1280064817 source:/media/Baeumchen/work/kajiya2D/src/objects/gameObjectManager.cpp
+1286619666 source:/media/Baeumchen/work/kajiya2D/src/objects/gameObjectManager.cpp
 	<string>
 	<vector>
 	<map>
@@ -1889,7 +1891,7 @@
 	<objects/visualAppearance.hpp>
 	<objects/gameObjectManager.hpp>
 
-1280064640 source:/media/Baeumchen/work/kajiya2D/src/objects/spacialObject.cpp
+1286627942 source:/media/Baeumchen/work/kajiya2D/src/objects/spacialObject.cpp
 	<string>
 	<SFML/System.hpp>
 	<objects/visualAppearance.hpp>
@@ -1897,8 +1899,23 @@
 	<objects/gameObjectManager.hpp>
 	<main.hpp>
 	<Box2D/Box2D.h>
+	<Box2D/Dynamics/Contacts/b2Contact.h>
+	<objects/material.hpp>
 
 1278790862 source:/media/Baeumchen/work/kajiya2D/src/objects/visualAppearance.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<vector>
+	<objects/animation.hpp>
+	<objects/visualAppearance.hpp>
+	<main.hpp>
+
+1286627536 /media/Baeumchen/work/kajiya2D/include/objects/material.hpp
+	<string>
+	<vector>
+
+1286627575 source:/media/Baeumchen/work/kajiya2D/src/objects/material.cpp
 	<iostream>
 	<fstream>
 	<string>

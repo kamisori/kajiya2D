@@ -7,12 +7,14 @@
 
 GameWorld::GameWorld()
 {
+    std::string visualAppearancesFile ( "data/visualAppearances.data" );
+    std::string materialFile ( "data/materials.data" );
+    std::string objectFile ( "data/spacialObjects.data" );
 
     this->globalGameObjectManager_ = new objects::GameObjectManager();
-    std::string visualAppearancesFile ("data/visualAppearances.data");
-    this->globalGameObjectManager_->loadVisualAppearances( visualAppearancesFile );
 
-    std::string objectFile ("data/spacialObjects.data");
+    this->globalGameObjectManager_->loadVisualAppearances( visualAppearancesFile );
+    this->globalGameObjectManager_->loadMaterials( materialFile );
     this->globalGameObjectManager_->loadObjects( objectFile );
 }
 

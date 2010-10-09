@@ -8,11 +8,6 @@
 #include <objects/gameObjectManager.hpp>
 namespace objects{
 
-    void GameObjectManager::createSpacialObject( std::string spacialObjectId, std::string visualAppearanceId )
-    {
-        SpacialObject* temporaryObject = new SpacialObject( spacialObjectId, visualAppearanceId );
-        this->spacialObjects_.push_back( temporaryObject );
-    }
 
     VisualAppearance* GameObjectManager::provideVisualAppearance( std::string visualAppearanceId )
     {
@@ -25,7 +20,19 @@ namespace objects{
                 return (*it);
             }
         }
-        //throw exception
+        exit(1);
+    }
+
+    Material* GameObjectManager::provideMaterial( std::string materialId )
+    {
+        std::vector< Material* >::iterator it;
+        for( it = this->materialLibrary_.begin(); it < this->materialLibrary_.end(); it++ )
+        {
+            if( materialId.compare( (*it)->getMaterialId() ) == 0 )
+            {
+                return (*it);
+            }
+        }
         exit(1);
     }
 
@@ -53,13 +60,12 @@ namespace objects{
          return NULL;
     }
 
-//    AudioAppearance* GameObjectManager::provideAudioAppearance( std::string* audioAppearanceId )
- //std::string spacialObjectId, std::string visualAppearanceId, b2BodyDef* bodyDefinition, b2FixtureDef* fixtureDefinition
-    //std::string* spacialObjectId, float posX, float posY, PositionInZ posZ, float orientation, bool collides, float collisionR, std::string* visualAppearanceId
+
     void GameObjectManager::loadObjects( std::string spacialObjectsFile )
     {
-        FileData* dataFromFile = fetchFileData( &spacialObjectsFile, 38 );
+        FileData* dataFromFile = fetchFileData( &spacialObjectsFile, 4 );
         FileData::iterator itData;
+
         for( itData = dataFromFile->begin(); itData < dataFromFile->end(); itData++ )
         {
             FileEntry::iterator itEntry;
@@ -68,191 +74,14 @@ namespace objects{
 
             std::string objectId = (*itEntry);
             itEntry++;
-            std::string visualAppearanceId = (*itEntry);
+            std::string materialId = (*itEntry);
             itEntry++;
+            b2Vec2 position;
+            position.x = atof((*itEntry).c_str());
+            itEntry++;
+            position.y = atof((*itEntry).c_str());
 
-            SpacialObject* temporaryObject = new SpacialObject( objectId, visualAppearanceId );
-
-            if( (*itEntry).compare( "static" ) == 0 ){
-                temporaryObject->bodyDefinition_.type_ = STATIC;
-            }
-            else if ( (*itEntry).compare( "dynamic" ) == 0 ){
-                temporaryObject->bodyDefinition_.type_ = DYNAMIC;
-            }
-            else if ( (*itEntry).compare( "kinematic" ) == 0 ){
-                temporaryObject->bodyDefinition_.type_ = KINEMATIC;
-            }
-            else{
-                delete temporaryObject;
-                exit(1);
-            }
-            itEntry++;
-            temporaryObject->bodyDefinition_.position_.x = atof((*itEntry).c_str());;
-            itEntry++;
-            temporaryObject->bodyDefinition_.position_.y = atof((*itEntry).c_str());;
-            itEntry++;
-            temporaryObject->bodyDefinition_.angle_ = atof((*itEntry).c_str());
-            itEntry++;
-            temporaryObject->bodyDefinition_.linearVelocity_.x = atof((*itEntry).c_str());
-            itEntry++;
-            temporaryObject->bodyDefinition_.linearVelocity_.y = atof((*itEntry).c_str());
-            itEntry++;
-            temporaryObject->bodyDefinition_.angularVelocity_ = atof((*itEntry).c_str());
-            itEntry++;
-            temporaryObject->bodyDefinition_.linearDamping_ =  atof((*itEntry).c_str());
-            itEntry++;
-            temporaryObject->bodyDefinition_.angularDamping_ = atof((*itEntry).c_str());
-            itEntry++;
-
-            if( (*itEntry).compare( "allowSleep" ) == 0 ){
-                temporaryObject->bodyDefinition_.allowSleep_ = true;
-            }
-            else if( (*itEntry).compare( "denySleep" ) == 0 ){
-                temporaryObject->bodyDefinition_.allowSleep_ = false;
-            }
-            else{
-                delete temporaryObject;
-                exit(1);
-            }
-            itEntry++;
-
-            if( (*itEntry).compare( "awake" ) == 0 ){
-                temporaryObject->bodyDefinition_.awake_ = true;
-            }
-            else if( (*itEntry).compare( "asleep" ) == 0 ){
-                temporaryObject->bodyDefinition_.awake_ = false;
-            }
-            else{
-                delete temporaryObject;
-                exit(1);
-            }
-            itEntry++;
-
-            if( (*itEntry).compare( "denyRotation" ) == 0 ){
-                //in b2BodyDef this is fixedRotation, not denyRotation
-                temporaryObject->bodyDefinition_.denyRotation_ = true;
-            }
-            else if( (*itEntry).compare( "allowRotation" ) == 0 ){
-                //in b2BodyDef this is fixedRotation, not denyRotation
-                temporaryObject->bodyDefinition_.denyRotation_= false;
-            }
-            else{
-                delete temporaryObject;
-                exit(1);
-            }
-            itEntry++;
-
-            if( (*itEntry).compare( "isBullet" ) == 0 ){
-                temporaryObject->bodyDefinition_.isBullet_ = true;
-            }
-            else if( (*itEntry).compare( "isNoBullet" ) == 0 ){
-                temporaryObject->bodyDefinition_.isBullet_ = false;
-            }
-            else{
-                delete temporaryObject;
-                exit(1);
-            }
-            itEntry++;
-
-            if( (*itEntry).compare( "active" ) == 0 ){
-                temporaryObject->bodyDefinition_.active_ = true;
-            }
-            else if( (*itEntry).compare( "inactive" ) == 0 ){
-                temporaryObject->bodyDefinition_.active_ = false;
-            }
-            else{
-                delete temporaryObject;
-                exit(1);
-            }
-            itEntry++;
-            temporaryObject->fixtureDefinition_.friction_ = atof((*itEntry).c_str());
-            itEntry++;
-            temporaryObject->fixtureDefinition_.restitution_ = atof((*itEntry).c_str());
-            itEntry++;
-            temporaryObject->fixtureDefinition_.density_ = atof((*itEntry).c_str());
-            itEntry++;
-            if( (*itEntry).compare( "isSensor") == 0 ){
-                temporaryObject->fixtureDefinition_.isSensor_ = true;
-            }
-            else if( (*itEntry).compare( "isNoSensor" ) == 0 ){
-                temporaryObject->fixtureDefinition_.isSensor_ = false;
-            }
-            itEntry++;
-
-            b2CircleShape tmpCircle;
-            b2PolygonShape tmpBox;
-
-            if( (*itEntry).compare( "circle" ) == 0 ){
-                temporaryObject->shape_ = CIRCLE;
-                itEntry++;
-                temporaryObject->circle_.center.x = atof((*itEntry).c_str());
-                itEntry++;
-                temporaryObject->circle_.center.y = atof((*itEntry).c_str());
-                itEntry++;
-                temporaryObject->circle_.radius = atof((*itEntry).c_str());
-
-                temporaryObject->setAngleOffset(0);
-            }
-            else if( (*itEntry).compare( "edge" ) == 0 ){
-                temporaryObject->shape_ = EDGE;
-                itEntry++;
-                temporaryObject->polygon_.countOfVertices = 2;
-                temporaryObject->polygon_.vertices[0].x = atof((*itEntry).c_str());
-                itEntry++;
-                temporaryObject->polygon_.vertices[0].y = atof((*itEntry).c_str());
-                itEntry++;
-                temporaryObject->polygon_.vertices[1].x = atof((*itEntry).c_str());
-                itEntry++;
-                temporaryObject->polygon_.vertices[1].y = atof((*itEntry).c_str());
-
-                temporaryObject->setAngleOffset(0);
-            }
-            else if( (*itEntry).compare( "axisAlignedBox" ) == 0 ){
-                temporaryObject->shape_ = ALIGNED_BOX;
-                itEntry++;
-
-                temporaryObject->box_.halfSize.x = atof((*itEntry).c_str());
-                itEntry++;
-                temporaryObject->box_.halfSize.y = atof((*itEntry).c_str());
-
-                temporaryObject->box_.center.x = 0;
-                temporaryObject->box_.center.x = 0;
-                temporaryObject->box_.angle = 0;
-                temporaryObject->setAngleOffset(0);
-            }
-            else if( (*itEntry).compare( "orientedBox" ) == 0 ){
-                temporaryObject->shape_ = ORIENTED_BOX;
-                itEntry++;
-                temporaryObject->box_.halfSize.x = atof((*itEntry).c_str());
-                itEntry++;
-                temporaryObject->box_.halfSize.y = atof((*itEntry).c_str());
-                itEntry++;
-                temporaryObject->box_.center.x = atof((*itEntry).c_str());
-                itEntry++;
-                temporaryObject->box_.center.y = atof((*itEntry).c_str());
-                itEntry++;
-                temporaryObject->box_.angle = atof((*itEntry).c_str());
-                temporaryObject->setAngleOffset(atof((*itEntry).c_str()));
-            }
-            else if( (*itEntry).compare( "polygon" ) == 0 ){ //circle edge alignedBox orientedBox polygon
-                temporaryObject->shape_ = POLYGON;
-                itEntry++;
-                temporaryObject->polygon_.countOfVertices = atoi((*itEntry).c_str());
-
-                for( unsigned int i = 0; i < temporaryObject->polygon_.countOfVertices; i++ ){
-                    itEntry++;
-                    temporaryObject->polygon_.vertices[i].x = atof((*itEntry).c_str());
-                    itEntry++;
-                    temporaryObject->polygon_.vertices[i].y = atof((*itEntry).c_str());
-                }
-
-                temporaryObject->setAngleOffset(0);
-            }
-            else{
-                delete temporaryObject;
-                exit(1);
-            }
-
+            SpacialObject* temporaryObject = new SpacialObject( objectId, materialId, position );
             if( temporaryObject != NULL )
             {
                 this->spacialObjects_.push_back( temporaryObject );
@@ -314,7 +143,215 @@ namespace objects{
         exit(1);
     }
 
-    // std::string* visualAppearanceId; std::string* animationsDescriptionFile
+    void GameObjectManager::loadMaterials( std::string materialFile )
+    {
+        FileData* dataFromFile = fetchFileData( &materialFile, 24 );
+        FileData::iterator itData;
+
+        for( itData = dataFromFile->begin(); itData < dataFromFile->end(); itData++ )
+        {
+            FileEntry::iterator itEntry;
+            FileEntry tmp = (*itData);
+            itEntry = tmp.begin();
+
+            std::string materialId = (*itEntry);
+            itEntry++;
+            std::string visualAppearanceId = (*itEntry);
+            itEntry++;
+
+            bodyDefinition bodyDefinitionTemplate;
+
+            bodyDefinitionTemplate.position_.x = 0.0;
+            bodyDefinitionTemplate.position_.y = 0.0;
+
+            if( (*itEntry).compare( "static" ) == 0 ){
+                bodyDefinitionTemplate.type_ = STATIC;
+            }
+            else if ( (*itEntry).compare( "dynamic" ) == 0 ){
+                bodyDefinitionTemplate.type_ = DYNAMIC;
+            }
+            else if ( (*itEntry).compare( "kinematic" ) == 0 ){
+                bodyDefinitionTemplate.type_ = KINEMATIC;
+            }
+            else{
+                exit(1);
+            }
+            itEntry++;
+            bodyDefinitionTemplate.angle_ = atof((*itEntry).c_str());
+            itEntry++;
+            bodyDefinitionTemplate.linearVelocity_.x = atof((*itEntry).c_str());
+            itEntry++;
+            bodyDefinitionTemplate.linearVelocity_.y = atof((*itEntry).c_str());
+            itEntry++;
+            bodyDefinitionTemplate.angularVelocity_ = atof((*itEntry).c_str());
+            itEntry++;
+            bodyDefinitionTemplate.linearDamping_ =  atof((*itEntry).c_str());
+            itEntry++;
+            bodyDefinitionTemplate.angularDamping_ = atof((*itEntry).c_str());
+            itEntry++;
+
+            if( (*itEntry).compare( "allowSleep" ) == 0 ){
+                bodyDefinitionTemplate.allowSleep_ = true;
+            }
+            else if( (*itEntry).compare( "denySleep" ) == 0 ){
+                bodyDefinitionTemplate.allowSleep_ = false;
+            }
+            else{
+                exit(1);
+            }
+            itEntry++;
+
+            if( (*itEntry).compare( "awake" ) == 0 ){
+                bodyDefinitionTemplate.awake_ = true;
+            }
+            else if( (*itEntry).compare( "asleep" ) == 0 ){
+                bodyDefinitionTemplate.awake_ = false;
+            }
+            else{
+                exit(1);
+            }
+            itEntry++;
+
+            if( (*itEntry).compare( "denyRotation" ) == 0 ){
+                bodyDefinitionTemplate.denyRotation_ = true;
+            }
+            else if( (*itEntry).compare( "allowRotation" ) == 0 ){
+                bodyDefinitionTemplate.denyRotation_ = false;
+            }
+            else{
+                exit(1);
+            }
+            itEntry++;
+
+            if( (*itEntry).compare( "isBullet" ) == 0 ){
+                bodyDefinitionTemplate.isBullet_ = true;
+            }
+            else if( (*itEntry).compare( "isNoBullet" ) == 0 ){
+                bodyDefinitionTemplate.isBullet_ = false;
+            }
+            else{
+                exit(1);
+            }
+            itEntry++;
+
+            if( (*itEntry).compare( "active" ) == 0 ){
+                bodyDefinitionTemplate.active_ = true;
+            }
+            else if( (*itEntry).compare( "inactive" ) == 0 ){
+                bodyDefinitionTemplate.active_ = false;
+            }
+            else{
+                exit(1);
+            }
+
+            itEntry++;
+            fixtureDefinition fixtureDefinitionTemplate;
+            fixtureDefinitionTemplate.friction_ = atof((*itEntry).c_str());
+            itEntry++;
+            fixtureDefinitionTemplate.restitution_ = atof((*itEntry).c_str());
+            itEntry++;
+            fixtureDefinitionTemplate.density_ = atof((*itEntry).c_str());
+            itEntry++;
+            if( (*itEntry).compare( "isSensor") == 0 ){
+                fixtureDefinitionTemplate.isSensor_ = true;
+            }
+            else if( (*itEntry).compare( "isNoSensor" ) == 0 ){
+                fixtureDefinitionTemplate.isSensor_ = false;
+            }
+            itEntry++;
+
+            circle tmpCircle;
+            polygon tmpPolygon;
+            box tmpBox;
+            float  angleOffsetForAnimation = 0;
+            if( (*itEntry).compare( "circle" ) == 0 ){
+                itEntry++;
+                tmpCircle.center.x = atof((*itEntry).c_str());
+                itEntry++;
+                tmpCircle.center.y = atof((*itEntry).c_str());
+                itEntry++;
+                tmpCircle.radius = atof((*itEntry).c_str());
+
+                Material* temporaryMaterial = new Material( materialId, visualAppearanceId, bodyDefinitionTemplate, fixtureDefinitionTemplate, angleOffsetForAnimation, tmpCircle );
+                this->materialLibrary_.push_back( temporaryMaterial );
+            }
+            else
+            {
+                Shape shapeType;
+                if( (*itEntry).compare( "edge" ) == 0 ){
+                    shapeType = EDGE;
+                    itEntry++;
+                    tmpPolygon.countOfVertices = 2;
+                    tmpPolygon.vertices[0].x = atof((*itEntry).c_str());
+                    itEntry++;
+                    tmpPolygon.vertices[0].y = atof((*itEntry).c_str());
+                    itEntry++;
+                    tmpPolygon.vertices[1].x = atof((*itEntry).c_str());
+                    itEntry++;
+                    tmpPolygon.vertices[1].y = atof((*itEntry).c_str());
+
+                    Material* temporaryMaterial = new Material( materialId, visualAppearanceId, bodyDefinitionTemplate, fixtureDefinitionTemplate, angleOffsetForAnimation, shapeType, tmpPolygon );
+                    this->materialLibrary_.push_back( temporaryMaterial );
+                }
+                else if( (*itEntry).compare( "axisAlignedBox" ) == 0 ){
+                    shapeType = ALIGNED_BOX;
+                    itEntry++;
+
+                    tmpBox.halfSize.x = atof((*itEntry).c_str());
+                    itEntry++;
+                    tmpBox.halfSize.y = atof((*itEntry).c_str());
+
+                    tmpBox.center.x = 0;
+                    tmpBox.center.x = 0;
+                    tmpBox.angle = 0;
+
+                    Material* temporaryMaterial = new Material( materialId, visualAppearanceId, bodyDefinitionTemplate, fixtureDefinitionTemplate, angleOffsetForAnimation, shapeType, tmpBox );
+                    this->materialLibrary_.push_back( temporaryMaterial );
+                }
+                else if( (*itEntry).compare( "orientedBox" ) == 0 ){
+                    shapeType = ORIENTED_BOX;
+
+                    itEntry++;
+                    tmpBox.halfSize.x = atof((*itEntry).c_str());
+                    itEntry++;
+                    tmpBox.halfSize.y = atof((*itEntry).c_str());
+                    itEntry++;
+                    tmpBox.center.x = atof((*itEntry).c_str());
+                    itEntry++;
+                    tmpBox.center.y = atof((*itEntry).c_str());
+                    itEntry++;
+                    tmpBox.angle = atof((*itEntry).c_str());
+                    angleOffsetForAnimation = tmpBox.angle;
+
+                    Material* temporaryMaterial = new Material( materialId, visualAppearanceId, bodyDefinitionTemplate, fixtureDefinitionTemplate, angleOffsetForAnimation, shapeType, tmpBox );
+                    this->materialLibrary_.push_back( temporaryMaterial );
+                }
+                else if( (*itEntry).compare( "polygon" ) == 0 ){
+                    shapeType = POLYGON;
+                    itEntry++;
+                    tmpPolygon.countOfVertices = atoi((*itEntry).c_str());
+
+                    for( unsigned int i = 0; i < tmpPolygon.countOfVertices; i++ )
+                    {
+                        itEntry++;
+                        tmpPolygon.vertices[i].x = atof((*itEntry).c_str());
+                        itEntry++;
+                        tmpPolygon.vertices[i].y = atof((*itEntry).c_str());
+                    }
+
+                    Material* temporaryMaterial = new Material( materialId, visualAppearanceId, bodyDefinitionTemplate, fixtureDefinitionTemplate, angleOffsetForAnimation, shapeType, tmpPolygon );
+                    this->materialLibrary_.push_back( temporaryMaterial );
+                }
+                else
+                {
+                    exit(1);
+                }
+
+            }
+
+        }
+    }
+
     void GameObjectManager::loadVisualAppearances( std::string visualAppearanceFile )
     {
         FileData* dataFromFile = fetchFileData( &visualAppearanceFile, 2 );
@@ -334,8 +371,6 @@ namespace objects{
             this->visualAppearancesLibrary_.push_back( temporaryVisualAppearance );
         }
     }
-
-//    void GameObjectManager::loadAudioAppearances( std::string* audioAppearanceFile )
 
     GameObjectManager::GameObjectManager()
     {
