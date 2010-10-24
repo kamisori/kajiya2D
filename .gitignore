@@ -3,7 +3,7 @@ bin/*
 obj/*
 include/Box2D/*
 libsfml*
-nodachi2D.depend
-nodachi2D.layout
+kajiya2D.depend
+kajiya2D.layout
 recreate_links.sh
 
