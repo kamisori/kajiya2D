@@ -35,31 +35,26 @@ namespace objects
         return visualAppearanceId_;
     }
 
-    VisualAppearance::VisualAppearance( std::string visualAppearanceId, std::string animationsDescriptionFile )
+    std::string VisualAppearance::constructFileEntry()
     {
-        this->visualAppearanceId_ = visualAppearanceId;
+        std::string resultString;
 
-        FileData* dataFromFile = b2WorldAndVisualWorld.globalGameObjectManager_->parseFileData( &animationsDescriptionFile, 5 );
+        resultString = "";
+        resultString = this->visualAppearanceId_ + ";";
+        resultString = this->animationsDescriptionFile_ + ";";
+
+        return resultString;
+    }
+
+    void VisualAppearance::loadAnimations()
+    {
+        FileData* dataFromFile = b2WorldAndVisualWorld.globalGameObjectManager_->parseFileData( &this->animationsDescriptionFile_, 5 );
 
         FileData::iterator itData;
         for( itData = dataFromFile->begin(); itData < dataFromFile->end(); itData++ )
         {
-            FileEntry::iterator itEntry;
             FileEntry tmp = (*itData);
-            itEntry = tmp.begin();
-
-            std::string animationId = (*itEntry);
-            itEntry++;
-            std::string animationFileName = (*itEntry);
-            itEntry++;
-            sf::Vector2i rowsAndCollumns;
-            rowsAndCollumns.x = atoi((*itEntry).c_str());
-            itEntry++;
-            rowsAndCollumns.y = atoi((*itEntry).c_str());
-            itEntry++;
-            int delayPerFrame = atoi((*itEntry).c_str());
-
-            Animation* temporaryAnimation = new Animation( animationId, animationFileName, rowsAndCollumns, delayPerFrame );
+            Animation* temporaryAnimation = new Animation(tmp);
 
             if( temporaryAnimation != NULL )
             {
@@ -67,15 +62,23 @@ namespace objects
             }
         }
 
+    }
+
+    VisualAppearance::VisualAppearance( FileEntry inData )
+    {
+        FileEntry::iterator itEntry;
+        itEntry = inData.begin();
+
+        this->visualAppearanceId_ = (*itEntry);
+        itEntry++;
+        this->animationsDescriptionFile_ = (*itEntry);
+
+        loadAnimations();
+
         if(possibleAnimations_.empty())
         {
             exit(1);
         }
-    }
-
-    VisualAppearance::VisualAppearance()
-    {
-        exit(1);
     }
 
     VisualAppearance::~VisualAppearance()

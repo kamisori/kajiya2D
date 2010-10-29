@@ -26,15 +26,23 @@ namespace objects
         return this->animationId_;
     }
 
-
-    Animation::Animation( std::string animationId, std::string fileName, sf::Vector2i rowsAndCollumns, int delayPerFrameInMs )
+    std::string Animation::constructFileEntry()
     {
-        this->allFrames_ = new sf::Image();
+        std::string resultString;
 
-        this->animationId_ = animationId;
-        this->delayPerFrameInMs_ = delayPerFrameInMs;
+        resultString = "";
+        resultString += this->animationId_ + ";";
+        resultString += this->fileName_ + ";";
+        resultString += this->rowsAndCollumns_.x + ";";
+        resultString += this->rowsAndCollumns_.y + ";";
+        resultString += this->delayPerFrameInMs_ + ";\r\n";
 
-        if( allFrames_->LoadFromFile( fileName ) )
+        return resultString;
+    }
+
+    void Animation::loadPicture()
+    {
+        if( allFrames_->LoadFromFile( this->fileName_ ) )
         {
             sf::Vector2i* imageDimensions = new sf::Vector2i();
             sf::Vector2i* spriteDimensions = new sf::Vector2i();
@@ -42,8 +50,8 @@ namespace objects
             imageDimensions->y = this->allFrames_->GetHeight();
             imageDimensions->x = this->allFrames_->GetWidth();
 
-            spriteDimensions->y = imageDimensions->y / rowsAndCollumns.y;
-            spriteDimensions->x = imageDimensions->x / rowsAndCollumns.x;
+            spriteDimensions->y = imageDimensions->y / this->rowsAndCollumns_.y;
+            spriteDimensions->x = imageDimensions->x / this->rowsAndCollumns_.x;
 
             for( int y = 0; y <= imageDimensions->y - spriteDimensions->y; y += spriteDimensions->y )
             {
@@ -59,17 +67,39 @@ namespace objects
                     this->frames_.push_back( temporarySprite );
                 }
             }
-
-            if( this->frames_.size() != (unsigned) ( rowsAndCollumns.x * rowsAndCollumns.y ) )
-            {
-                exit(1);
-            }
         }
     }
 
-    Animation::Animation(){
-        exit(1);
+    void Animation::buildAnimation()
+    {
+        this->allFrames_ = new sf::Image();
+
+        loadPicture();
+
+        if( this->frames_.size() != (unsigned) ( this->rowsAndCollumns_.x * this->rowsAndCollumns_.y ) )
+        {
+            exit(1);
+        }
     }
+
+    Animation::Animation(FileEntry inData)
+    {
+        FileEntry::iterator itEntry;
+        itEntry = inData.begin();
+
+        this->animationId_ = (*itEntry);
+        itEntry++;
+        this->fileName_ = (*itEntry);
+        itEntry++;
+        this->rowsAndCollumns_.x = atoi((*itEntry).c_str());
+        itEntry++;
+        this->rowsAndCollumns_.y = atoi((*itEntry).c_str());
+        itEntry++;
+        this->delayPerFrameInMs_ = atoi((*itEntry).c_str());
+
+        buildAnimation();
+    }
+
     Animation::~Animation(){
         this->frames_.clear();
         delete this->allFrames_;

@@ -295,15 +295,8 @@ namespace objects{
 
         for( itData = dataFromFile->begin(); itData < dataFromFile->end(); itData++ )
         {
-            FileEntry::iterator itEntry;
             FileEntry tmp = (*itData);
-            itEntry = tmp.begin();
-
-            std::string visualId = (*itEntry);
-            itEntry++;
-            std::string animationFile = (*itEntry);
-
-            VisualAppearance* temporaryVisualAppearance = new VisualAppearance( visualId, animationFile );
+            VisualAppearance* temporaryVisualAppearance = new VisualAppearance( tmp );
             this->visualAppearancesLibrary_.push_back( temporaryVisualAppearance );
         }
     }

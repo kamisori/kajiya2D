@@ -13,13 +13,16 @@ namespace objects
             Animation*  getCurrentAnimation();
             std::string getVisualAppearanceId();
 
-            VisualAppearance( std::string visualAppearanceId, std::string animationsDescriptionFile );
-            VisualAppearance();
+            std::string constructFileEntry();
+            VisualAppearance( FileEntry inData );
             ~VisualAppearance();
         protected:
 
         private:
-            std::string          visualAppearanceId_;
+            void loadAnimations();
+
+            std::string                 animationsDescriptionFile_;
+            std::string                 visualAppearanceId_;
             std::vector< Animation* >   possibleAnimations_;
             Animation*                  currentAnimation_;
     };
