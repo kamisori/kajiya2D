@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <objects/spacialObject.hpp>
 
+#define ACCURACY 0.001
 #define PI 3.14159
 #define RATIO 32
 #define RED 255,0,0,255

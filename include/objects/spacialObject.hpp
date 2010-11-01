@@ -19,25 +19,21 @@ namespace objects
 
             sf::Vector2f moveObject( sf::Vector2f addThis );
 
-            SpacialObject( std::string spacialObjectId, std::string materialId, b2Vec2 position );
-            ~SpacialObject();
-
             std::string spacialObjectId_;
+            std::string materialId_;
 
             bodyDefinition bodyDefinition_;
-
             fixtureDefinition fixtureDefinition_;
-
             Shape shape_;
-
             circle circle_;
-
             polygon polygon_;
-
             box box_;
 
             bool selected_;
 
+            std::string constructFileEntry();
+            SpacialObject( FileEntry inData );
+            ~SpacialObject();
     	protected:
 
     	private:

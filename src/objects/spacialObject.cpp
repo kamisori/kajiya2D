@@ -7,7 +7,11 @@
 #include <Box2D/Box2D.h>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <objects/material.hpp>
+#include <iostream>
+#include <conversion.hpp>
 
+#define ACCURACY 0.001
+#define NACCURACY 1000
 namespace objects
 {
     float SpacialObject::getAngleOffsetForAnimation()
@@ -30,20 +34,38 @@ namespace objects
         return visualAppearance_;
     }
 
-    SpacialObject::SpacialObject( std::string spacialObjectId, std::string materialId, b2Vec2 position )
+    std::string SpacialObject::constructFileEntry()
     {
-        this->selected_ = false;
-        spacialObjectId_.assign( spacialObjectId );
+        std::string resultString;
 
-        Material* temporaryMaterial;
-        temporaryMaterial = b2WorldAndVisualWorld.globalGameObjectManager_->provideMaterial( materialId );
+        resultString = "";
+        resultString += this->spacialObjectId_ + ";";
+        resultString += this->materialId_ + ";";
+        resultString += conversion::itoa((int)(this->bodyDefinition_.position_.x * NACCURACY)) + ";";
+        resultString += conversion::itoa((int)(this->bodyDefinition_.position_.y * NACCURACY)) + ";";
+        return resultString;
+    }
+
+    SpacialObject::SpacialObject( FileEntry inData )
+    {
+        FileEntry::iterator itEntry;
+        itEntry = inData.begin();
+
+        this->selected_ = false;
+        this->spacialObjectId_ = (*itEntry);
+        itEntry++;
+        this->materialId_ = ( *itEntry );
+        Material* temporaryMaterial = b2WorldAndVisualWorld.globalGameObjectManager_->provideMaterial( *itEntry );
+        itEntry++;
+        this->bodyDefinition_ = temporaryMaterial->getBodyDefinition();
+        this->bodyDefinition_.position_.x = atof((*itEntry).c_str()) * ACCURACY;
+        itEntry++;
+        this->bodyDefinition_.position_.y = atof((*itEntry).c_str()) * ACCURACY;
+
 
         this->visualAppearance_ = b2WorldAndVisualWorld.globalGameObjectManager_->provideVisualAppearance( temporaryMaterial->getVisualAppearanceId() );
-
-        this->bodyDefinition_ = temporaryMaterial->getBodyDefinition();
-        this->bodyDefinition_.position_.x = position.x;
-        this->bodyDefinition_.position_.y = position.y;
         this->fixtureDefinition_ = temporaryMaterial->getFixtureDefinition();
+
         this->shape_ = temporaryMaterial->getShapeType();
         if( this->shape_ == CIRCLE )
         {

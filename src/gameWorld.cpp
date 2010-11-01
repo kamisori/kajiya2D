@@ -16,6 +16,10 @@ GameWorld::GameWorld()
     this->globalGameObjectManager_->loadVisualAppearances( visualAppearancesFile );
     this->globalGameObjectManager_->loadMaterials( materialFile );
     this->globalGameObjectManager_->loadObjects( objectFile );
+
+    //this->globalGameObjectManager_->saveObjects( objectFile );
+    //this->globalGameObjectManager_->saveMaterials( materialFile );
+    //this->globalGameObjectManager_->saveVisualAppearances( visualAppearancesFile );
 }
 
 GameWorld::~GameWorld(){

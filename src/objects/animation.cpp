@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <objects/animation.hpp>
+#include <conversion.hpp>
 namespace objects
 {
     void Animation::iterateToNextFrame(){
@@ -33,9 +34,9 @@ namespace objects
         resultString = "";
         resultString += this->animationId_ + ";";
         resultString += this->fileName_ + ";";
-        resultString += this->rowsAndCollumns_.x + ";";
-        resultString += this->rowsAndCollumns_.y + ";";
-        resultString += this->delayPerFrameInMs_ + ";\r\n";
+        resultString += conversion::itoa(this->rowsAndCollumns_.x) + ";";
+        resultString += conversion::itoa(this->rowsAndCollumns_.y) + ";";
+        resultString += conversion::itoa(this->delayPerFrameInMs_) + ";\r\n";
 
         return resultString;
     }

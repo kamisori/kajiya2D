@@ -40,10 +40,15 @@ namespace objects
         std::string resultString;
 
         resultString = "";
-        resultString = this->visualAppearanceId_ + ";";
-        resultString = this->animationsDescriptionFile_ + ";";
+        resultString += this->visualAppearanceId_ + ";";
+        resultString += this->animationsDescriptionFile_ + ";";
 
         return resultString;
+    }
+    std::string VisualAppearance::constructFileEntryAndSaveAnimations()
+    {
+        saveAnimations( this->animationsDescriptionFile_ );
+        return constructFileEntry();
     }
 
     void VisualAppearance::loadAnimations()
@@ -62,6 +67,17 @@ namespace objects
             }
         }
 
+    }
+    void VisualAppearance::saveAnimations( std::string animationFile )
+    {
+        std::vector< Animation* >::iterator it;
+        std::string fileContent;
+        fileContent = "";
+        for( it = this->possibleAnimations_.begin(); it < this->possibleAnimations_.end(); it++ )
+        {
+            fileContent += (*it)->constructFileEntry() + "\r\n";
+        }
+        b2WorldAndVisualWorld.globalGameObjectManager_->dumpFileData(animationFile, fileContent);
     }
 
     VisualAppearance::VisualAppearance( FileEntry inData )

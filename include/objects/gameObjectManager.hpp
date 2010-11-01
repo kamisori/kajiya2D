@@ -22,6 +22,10 @@ namespace objects
             void loadVisualAppearances( std::string visualAppearanceFile );
             void loadObjects( std::string spacialObjectsFile );
 
+            void saveMaterials( std::string materialFile );
+            void saveVisualAppearances( std::string visualAppearanceFile );
+            void saveObjects( std::string spacialObjectsFile );
+            void dumpFileData( std::string fileName, std::string outFileData );
             VisualAppearance* provideVisualAppearance( std::string visualAppearanceId );
             Material* provideMaterial( std::string materialId );
 
@@ -31,13 +35,14 @@ namespace objects
     		GameObjectManager();
     		~GameObjectManager();
     	private:
-    	FileEntry* parseFileEntry( std::string* entry, std::string* dataDivider );
-    	char* fetchFileData( std::string* fileName, int fields );
+            FileEntry* parseFileEntry( std::string* entry, std::string* dataDivider );
+            char* fetchFileData( std::string* fileName, int fields );
 
-    	SpacialObject*                      player_;
-    	std::vector< SpacialObject* >       spacialObjects_;
-    	std::vector< VisualAppearance* >    visualAppearancesLibrary_;
-    	std::vector< Material* >            materialLibrary_;
+
+            SpacialObject*                      player_;
+            std::vector< SpacialObject* >       spacialObjects_;
+            std::vector< VisualAppearance* >    visualAppearancesLibrary_;
+            std::vector< Material* >            materialLibrary_;
     };
 
 }
