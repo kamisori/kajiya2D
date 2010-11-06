@@ -216,15 +216,20 @@ int main()
             App.Draw(title);
             tmpSpritePosition.y += 30;
             objects::VisualAppearance* tmpAppearance = b2WorldAndVisualWorld.globalGameObjectManager_->nextVisualAppearance( i );
+                //itearate through the animations and 
             while( tmpAppearance != NULL )
             {
+                //move to next row, display next VA
                 tmpSpritePosition.y += 10;
                 //itearate through the animations
                 objects::Animation* tmpAnim = tmpAppearance->getCurrentAnimation();
 
+                //print the name/ID of the current animation
                 spriteDesc.SetText( tmpAppearance->getVisualAppearanceId() + " " + tmpAnim->getAnimationId() );
                 spriteDesc.SetPosition(tmpSpritePosition);
                 App.Draw(spriteDesc);
+
+                //move to next collumn, now display the current animation
                 tmpSpritePosition.x += 150;
                 sf::Sprite* tmpSprite = tmpAnim->getNextFrame();
                 tmpSprite->SetPosition( tmpSpritePosition );
@@ -320,3 +325,4 @@ int main()
     }
     return EXIT_SUCCESS;
 }
+
