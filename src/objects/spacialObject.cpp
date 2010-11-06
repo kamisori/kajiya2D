@@ -9,8 +9,6 @@
 #include <objects/material.hpp>
 #include <iostream>
 #include <conversion.hpp>
-
-#define ACCURACY 0.001
 #define NACCURACY 1000
 namespace objects
 {
@@ -58,9 +56,9 @@ namespace objects
         Material* temporaryMaterial = b2WorldAndVisualWorld.globalGameObjectManager_->provideMaterial( *itEntry );
         itEntry++;
         this->bodyDefinition_ = temporaryMaterial->getBodyDefinition();
-        this->bodyDefinition_.position_.x = atof((*itEntry).c_str()) * ACCURACY;
+        this->bodyDefinition_.position_.x = atof((*itEntry).c_str()) / NACCURACY;
         itEntry++;
-        this->bodyDefinition_.position_.y = atof((*itEntry).c_str()) * ACCURACY;
+        this->bodyDefinition_.position_.y = atof((*itEntry).c_str()) / NACCURACY;
 
 
         this->visualAppearance_ = b2WorldAndVisualWorld.globalGameObjectManager_->provideVisualAppearance( temporaryMaterial->getVisualAppearanceId() );

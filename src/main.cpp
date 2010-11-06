@@ -6,8 +6,9 @@
 #include <main.hpp>
 #include <stdio.h>
 #include <objects/spacialObject.hpp>
+#include <conversion.hpp>
 
-#define ACCURACY 0.001
+#define NACCURACY 1000
 #define PI 3.14159
 #define RATIO 32
 #define RED 255,0,0,255
@@ -40,10 +41,11 @@ bool created = false;*/
 sf::Mutex GlobalMutex;
 GameWorld b2WorldAndVisualWorld;
 sf::Vector2f resolution;
+sf::Window* app;
 
 void inputThread(void* UserData)
 {
-    sf::Window* app = static_cast<sf::Window*>(UserData);
+    app = static_cast<sf::Window*>(UserData);
     const sf::Input* keyInput = &app->GetInput();
     while( globalflags.Running )
     {
@@ -194,6 +196,8 @@ int main()
 
         sf::View tmpView = App.GetView();
         tmpView.Move(tmpOffset);
+        //std::cout << conversion::itoa( (int)(tmpView.GetCenter().x * NACCURACY) );
+        //std::cout << conversion::itoa( (int)(tmpView.GetCenter().y * NACCURACY) )<< "\r\n";
         App.SetView(tmpView);
 
         if(globalflags.displaySpritesLibrary){

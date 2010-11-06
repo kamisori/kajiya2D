@@ -33,6 +33,10 @@ namespace objects{
 
     void GameObjectManager::dumpFileData( std::string fileName, std::string outFileData )
     {
+        while(outFileData.length() < 64 )
+        {
+            outFileData += "#";
+        }
         std::ofstream ofs(fileName.c_str(), std::ofstream::trunc);
         ofs.write( outFileData.c_str() , outFileData.length() );
         ofs.close();
@@ -137,7 +141,9 @@ namespace objects{
         fileContent = "";
         for( it = this->materialLibrary_.begin(); it < this->materialLibrary_.end(); it++ )
         {
-            fileContent += (*it)->constructFileEntry() + "\r\n";
+            fileContent += (*it)->constructFileEntry();
+            if( it+1 != this->materialLibrary_.end() )
+             fileContent += "\r\n";
         }
         dumpFileData(materialFile, fileContent);
     }
@@ -148,7 +154,9 @@ namespace objects{
         fileContent = "";
         for( it = this->visualAppearancesLibrary_.begin(); it < this->visualAppearancesLibrary_.end(); it++ )
         {
-            fileContent += (*it)->constructFileEntryAndSaveAnimations() + "\r\n";
+            fileContent += (*it)->constructFileEntryAndSaveAnimations();
+            if( it+1 != this->visualAppearancesLibrary_.end() )
+             fileContent += "\r\n";
         }
         dumpFileData(visualAppearanceFile, fileContent);
     }
@@ -159,7 +167,9 @@ namespace objects{
         fileContent = "";
         for( it = this->spacialObjects_.begin(); it < this->spacialObjects_.end(); it++ )
         {
-            fileContent += (*it)->constructFileEntry() + "\r\n";
+            fileContent += (*it)->constructFileEntry();
+            if( it+1 != this->spacialObjects_.end() )
+             fileContent += "\r\n";
         }
         dumpFileData(spacialObjectsFile, fileContent);
     }

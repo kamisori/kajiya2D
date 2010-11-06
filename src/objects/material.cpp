@@ -6,7 +6,6 @@
 #include <objects/visualAppearance.hpp>
 #include <main.hpp>
 #include <conversion.hpp>
-#define ACCURACY 0.001
 #define NACCURACY 1000
 
 namespace objects
@@ -251,17 +250,17 @@ namespace objects
             exit(1);
         }
         itEntry++;
-        bodyDefinitionTemplate.angle_ = atof((*itEntry).c_str()) * ACCURACY;
+        bodyDefinitionTemplate.angle_ = atof((*itEntry).c_str()) / NACCURACY;
         itEntry++;
-        bodyDefinitionTemplate.linearVelocity_.x = atof((*itEntry).c_str()) * ACCURACY;
+        bodyDefinitionTemplate.linearVelocity_.x = atof((*itEntry).c_str()) / NACCURACY;
         itEntry++;
-        bodyDefinitionTemplate.linearVelocity_.y = atof((*itEntry).c_str()) * ACCURACY;
+        bodyDefinitionTemplate.linearVelocity_.y = atof((*itEntry).c_str()) / NACCURACY;
         itEntry++;
-        bodyDefinitionTemplate.angularVelocity_ = atof((*itEntry).c_str()) * ACCURACY;
+        bodyDefinitionTemplate.angularVelocity_ = atof((*itEntry).c_str()) / NACCURACY;
         itEntry++;
-        bodyDefinitionTemplate.linearDamping_ =  atof((*itEntry).c_str()) * ACCURACY;
+        bodyDefinitionTemplate.linearDamping_ =  atof((*itEntry).c_str()) / NACCURACY;
         itEntry++;
-        bodyDefinitionTemplate.angularDamping_ = atof((*itEntry).c_str()) * ACCURACY;
+        bodyDefinitionTemplate.angularDamping_ = atof((*itEntry).c_str()) / NACCURACY;
         itEntry++;
 
         if( (*itEntry).compare( "allowSleep" ) == 0 ){
@@ -320,11 +319,11 @@ namespace objects
 
         itEntry++;
         fixtureDefinition fixtureDefinitionTemplate;
-        fixtureDefinitionTemplate.friction_ = atof((*itEntry).c_str()) * ACCURACY;
+        fixtureDefinitionTemplate.friction_ = atof((*itEntry).c_str()) / NACCURACY;
         itEntry++;
-        fixtureDefinitionTemplate.restitution_ = atof((*itEntry).c_str()) * ACCURACY;
+        fixtureDefinitionTemplate.restitution_ = atof((*itEntry).c_str()) / NACCURACY;
         itEntry++;
-        fixtureDefinitionTemplate.density_ = atof((*itEntry).c_str()) * ACCURACY;
+        fixtureDefinitionTemplate.density_ = atof((*itEntry).c_str()) / NACCURACY;
         itEntry++;
         if( (*itEntry).compare( "isSensor") == 0 ){
             fixtureDefinitionTemplate.isSensor_ = true;
@@ -340,11 +339,11 @@ namespace objects
         float  angleOffsetForAnimation = 0;
         if( (*itEntry).compare( "circle" ) == 0 ){
             itEntry++;
-            tmpCircle.center.x = atof((*itEntry).c_str()) * ACCURACY;
+            tmpCircle.center.x = atof((*itEntry).c_str()) / NACCURACY;
             itEntry++;
-            tmpCircle.center.y = atof((*itEntry).c_str()) * ACCURACY;
+            tmpCircle.center.y = atof((*itEntry).c_str()) / NACCURACY;
             itEntry++;
-            tmpCircle.radius = atof((*itEntry).c_str()) * ACCURACY;
+            tmpCircle.radius = atof((*itEntry).c_str()) / NACCURACY;
 
             createMaterial( this->materialId_, this->visualAppearanceId_, bodyDefinitionTemplate, fixtureDefinitionTemplate, angleOffsetForAnimation, tmpCircle );
         }
@@ -355,13 +354,13 @@ namespace objects
                 shapeType = EDGE;
                 itEntry++;
                 tmpPolygon.countOfVertices = 2;
-                tmpPolygon.vertices[0].x = atof((*itEntry).c_str()) * ACCURACY;
+                tmpPolygon.vertices[0].x = atof((*itEntry).c_str()) / NACCURACY;
                 itEntry++;
-                tmpPolygon.vertices[0].y = atof((*itEntry).c_str()) * ACCURACY;
+                tmpPolygon.vertices[0].y = atof((*itEntry).c_str()) / NACCURACY;
                 itEntry++;
-                tmpPolygon.vertices[1].x = atof((*itEntry).c_str()) * ACCURACY;
+                tmpPolygon.vertices[1].x = atof((*itEntry).c_str()) / NACCURACY;
                 itEntry++;
-                tmpPolygon.vertices[1].y = atof((*itEntry).c_str()) * ACCURACY;
+                tmpPolygon.vertices[1].y = atof((*itEntry).c_str()) / NACCURACY;
 
                 createMaterial( this->materialId_, this->visualAppearanceId_, bodyDefinitionTemplate, fixtureDefinitionTemplate, angleOffsetForAnimation, shapeType, tmpPolygon );
             }
@@ -369,9 +368,9 @@ namespace objects
                 shapeType = ALIGNED_BOX;
                 itEntry++;
 
-                tmpBox.halfSize.x = atof((*itEntry).c_str()) * ACCURACY;
+                tmpBox.halfSize.x = atof((*itEntry).c_str()) / NACCURACY;
                 itEntry++;
-                tmpBox.halfSize.y = atof((*itEntry).c_str()) * ACCURACY;
+                tmpBox.halfSize.y = atof((*itEntry).c_str()) / NACCURACY;
 
                 tmpBox.center.x = 0;
                 tmpBox.center.x = 0;
@@ -383,15 +382,15 @@ namespace objects
                 shapeType = ORIENTED_BOX;
 
                 itEntry++;
-                tmpBox.halfSize.x = atof((*itEntry).c_str()) * ACCURACY;
+                tmpBox.halfSize.x = atof((*itEntry).c_str()) / NACCURACY;
                 itEntry++;
-                tmpBox.halfSize.y = atof((*itEntry).c_str()) * ACCURACY;
+                tmpBox.halfSize.y = atof((*itEntry).c_str()) / NACCURACY;
                 itEntry++;
-                tmpBox.center.x = atof((*itEntry).c_str()) * ACCURACY;
+                tmpBox.center.x = atof((*itEntry).c_str()) / NACCURACY;
                 itEntry++;
-                tmpBox.center.y = atof((*itEntry).c_str()) * ACCURACY;
+                tmpBox.center.y = atof((*itEntry).c_str()) / NACCURACY;
                 itEntry++;
-                tmpBox.angle = atof((*itEntry).c_str()) * ACCURACY;
+                tmpBox.angle = atof((*itEntry).c_str()) / NACCURACY;
                 angleOffsetForAnimation = tmpBox.angle;
 
                 createMaterial( this->materialId_, this->visualAppearanceId_, bodyDefinitionTemplate, fixtureDefinitionTemplate, angleOffsetForAnimation, shapeType, tmpBox );
@@ -399,14 +398,14 @@ namespace objects
             else if( (*itEntry).compare( "polygon" ) == 0 ){
                 shapeType = POLYGON;
                 itEntry++;
-                tmpPolygon.countOfVertices = atoi((*itEntry).c_str()) * ACCURACY;
+                tmpPolygon.countOfVertices = atoi((*itEntry).c_str()) / NACCURACY;
 
                 for( unsigned int i = 0; i < tmpPolygon.countOfVertices; i++ )
                 {
                     itEntry++;
-                    tmpPolygon.vertices[i].x = atof((*itEntry).c_str()) * ACCURACY;
+                    tmpPolygon.vertices[i].x = atof((*itEntry).c_str()) / NACCURACY;
                     itEntry++;
-                    tmpPolygon.vertices[i].y = atof((*itEntry).c_str()) * ACCURACY;
+                    tmpPolygon.vertices[i].y = atof((*itEntry).c_str()) / NACCURACY;
                 }
 
                 createMaterial( this->materialId_, this->visualAppearanceId_, bodyDefinitionTemplate, fixtureDefinitionTemplate, angleOffsetForAnimation, shapeType, tmpPolygon );
