@@ -27,12 +27,20 @@ struct flags{
     bool created;
 };
 
+struct MouseClick{
+    sf::Mouse::Button clickButton;
+    int X;
+    int Y;
+    bool pressed;
+};
+
 class InputHandler :public sf::Thread
 {
     private:
         const sf::Input* keyInput_;
         virtual void Run();
     public:
+        MouseClick* mouseClickEvent_;
         sf::Mutex* GlobalMutex_;
         flags globalflags_;
         InputHandler(sf::RenderWindow* appWindow, sf::Mutex* GlobalMutex);

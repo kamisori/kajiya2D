@@ -34,6 +34,7 @@ InputHandler::InputHandler(sf::RenderWindow* appWindow, sf::Mutex* GlobalMutex)
 {
     keyInput_ = &appWindow->GetInput();
     GlobalMutex_ = GlobalMutex;
+    mouseClickEvent_ = new MouseClick[3];
 
     globalflags_.moveCameraDown = false;
     globalflags_.moveCameraLeft = false;
@@ -69,6 +70,38 @@ void InputHandler::Run()
         globalflags_.moveCameraDown  = keyInput_->IsKeyDown(sf::Key::Down);
         globalflags_.moveCameraLeft  = keyInput_->IsKeyDown(sf::Key::Left);
         globalflags_.moveCameraRight = keyInput_->IsKeyDown(sf::Key::Right);
+
+        for(int i = 0; i <= 2; i++ ){
+            if(keyInput_->IsMouseButtonDown((sf::Mouse::Button)i))
+            {
+                if(mouseClickEvent_[i].pressed == false )
+                {
+                    mouseClickEvent_[i].clickButton = (sf::Mouse::Button)i;
+                    mouseClickEvent_[i].pressed = true;
+                    mouseClickEvent_[i].X = keyInput_->GetMouseX();
+                    mouseClickEvent_[i].Y = keyInput_->GetMouseY();
+
+                    std::cout << "mouse button: " << i << "\r\n";
+                    std::cout << "clicked!" << "\r\n";
+                    std::cout << "at X: " << mouseClickEvent_[i].X << "\r\n";
+                    std::cout << "at Y: " << mouseClickEvent_[i].Y << "\r\n\r\n";
+
+                }
+            }
+            else if(mouseClickEvent_[i].pressed  == true)
+            {
+                mouseClickEvent_[i].clickButton = (sf::Mouse::Button)i;
+                mouseClickEvent_[i].pressed  = false;
+                mouseClickEvent_[i].X = keyInput_->GetMouseX();
+                mouseClickEvent_[i].Y = keyInput_->GetMouseY();
+
+                std::cout << "mouse button: " << i << "\r\n";
+                std::cout << "released!" << "\r\n";
+                std::cout << "at X: " << mouseClickEvent_[i].X << "\r\n";
+                std::cout << "at Y: " << mouseClickEvent_[i].Y << "\r\n\r\n";
+            }
+        }
+
 /*
         if(globalflags_.created){
             globalflags_.created = false;
