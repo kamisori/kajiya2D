@@ -14,28 +14,3 @@ If i remember correctly, the libsfml-*.so must go into /usr/lib, while building 
 
 windows:
 no idea. try getting the binaries, and probably put it into the project root folder and into the bin/debug and bin/release folders.
-
-
-
-things to do:
-
-main.cpp needs to be cleaned, or rewritten maybe. I still tend to rewrite it, even though it is very noodley...
-
-- rewrite/redesign/clean main.cpp
-- change the spacialObjects vector into a map with pair<x,y> as key and vector<object*>* as mapped value.
-- use mouse as input device for editing, left click selects, right click does an action, middle click opens a context menu to select an action l+r clickhold pans the view
-
-- creating a new spacialObject (select the material, select the visual appearance, place it.)
-- removing a spacialObject
-
-- creating a new material
-- editing a material
-- replacing a material
-- removing a material
-
-- scriptObjects: triggers: isTouched, touchedFromDirection, touchStart, touchEnd, contains, isActivated, isHold, isReleased, isStanding/Lying, isMidair, isFalling, isRising
-- scriptID;materialID;visualAppearanceID;X;Y;
-- scriptID;scriptFile;
-
-- editing VisualAppearances
-- editing Animations
