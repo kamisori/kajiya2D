@@ -1,12 +1,11 @@
-This is a level and leveldata editor for nodachi2D and is supposed to
-provide features for creating graphical content for games using nodachi2D.
+This is a level and leveldata editor for nodachi2D/heikiko2D and is supposed to
+provide features for creating graphical content for games using nodachi2D/heikiko2D.
 
+SFML is licensed under the libpng license and not my own work.
 
+                                        SFML
+                                        ----
 It is neccessary to get SFML and install it according to the following instructions:
-
-
-					SFML
-					----
 
 posix:
 you need to build it from source, and use --prefix=/usr i think. at least i had some problems when i set it up months ago.
@@ -14,3 +13,24 @@ If i remember correctly, the libsfml-*.so must go into /usr/lib, while building 
 
 windows:
 no idea. try getting the binaries, and probably put it into the project root folder and into the bin/debug and bin/release folders.
+
+
+
+				COPYRIGHT & LICENSE
+
+kajiya2D is an editor for leveldata for heikiko2D/nodachi2D.
+Copyright (C) 2010-2011  Paul Predkiewicz
+
+kajiya2D is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
